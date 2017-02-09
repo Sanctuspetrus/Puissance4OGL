@@ -9,9 +9,9 @@
 #define Z .850650808352039932
 
 //position de la camera
-float ex=-7;
-float ey=9;
-float ez=4;
+float ex=0;
+float ey=0;
+float ez=-5;
 
 //pas de déplacement de la caméra utilisé dans fct keyboard
 float pas_camera=1;
@@ -75,7 +75,7 @@ void keyboard(unsigned char key, int x, int y)
       case 'q':
          ex=ex-0.5;
          break;
-      case 'f':
+      case 'd':
          ex=ex+0.5;
          break;
       case 's':
@@ -84,10 +84,10 @@ void keyboard(unsigned char key, int x, int y)
       case 'z':
          ey=ey+0.5;
          break;
-      case 'd':
+      case 'f':
          ez=ez-0.5;
          break;
-      case 'e':
+      case 'r':
          ez=ez+0.5;
          break;
       case ' ':
@@ -155,7 +155,7 @@ void reshape (int w, int h)
    glViewport (0, 0, (GLsizei) w, (GLsizei) h);
    glMatrixMode (GL_PROJECTION);
    glLoadIdentity ();
-   glFrustum (-1.0, 1.0, -1.0, 1.0, 1.5, 20.0);
+   gluPerspective(90,w/h,1,50);
    glMatrixMode (GL_MODELVIEW);
 }
 
