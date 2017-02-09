@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "../glegle.h"
+#include "glegle.h"
 
 
 
@@ -91,6 +91,10 @@ void keyboard(unsigned char key, int x, int y)
       case 'e':
          ez=ez+0.5;
          break;
+      case ' ':
+
+        //on pose la boule
+         break;
       case 27:
          exit(0);
          break;
@@ -133,7 +137,7 @@ void display(void)
 
   glScalef(1,1,1);
 
-  cubev2(0,0,0, 8,1,8, 1,0,0);
+  cubev2(0,0,0, 8,1,8, 1,1,1);
 
   glTranslatef(sphereTranslateX+1, sphereTranslateY+1 ,sphereTranslateZ+1);
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
