@@ -1,8 +1,7 @@
-#include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "../glegle.h"
+#include "funct.h"
 
 
 
