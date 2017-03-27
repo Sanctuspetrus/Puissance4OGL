@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "funct.h"
+#include "./funct.h"
 
 
 void cube(int x,int y,int z,int scalex, int scaley, int scalez,float col1,float col2,float col3){
