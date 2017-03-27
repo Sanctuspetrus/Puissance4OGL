@@ -3,7 +3,9 @@
 
 const char NEUTRAL = 0;
 const char WHITE = 1;
-const char BLACK = 2;
+const char BLACK = -1;
+const char WIN_WHITE = 1 * GAME_SIZE;
+const char WIN_BLACK = -1 * GAME_SIZE;
 
 typedef struct _cursor {
 	int x;	// Positon du curseur sur X
@@ -20,11 +22,14 @@ typedef struct _game {
 
 // GAME
 void initGame(Game*);
-void validateGame(Game*);
-void printGame(Game*);
-void switchColor(Game*);
-void putDown(Game*);
-
+int validateGame(Game*);
+void printGame(Game);
+int getColor(Game);
+int putBallDown(Game*);
+int getPosColor(Game); // Couleur à la position du curseur
+int getPosColorAt(Game, int x, int y, int z); // Couleur à la position donnée
+void putBallAt(Game*, int x, int y, int z); // Couleur à la position donnée
+int fall(Game); // Position la plus basse en-dessous du curseur
 // CURSOR
 char getCursorColor(Cursor*);
 void setCursorColor(Cursor*, char);
