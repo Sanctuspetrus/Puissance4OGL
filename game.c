@@ -21,6 +21,7 @@ int validateDigonale(Game*);
 // 	Game* game = malloc(sizeof(Game));
 // 	Cursor* cursor;
 // 	int stop = 0;
+// 	int score = 0;
 // 	char input;
 //
 // 	initGame(game);
@@ -49,8 +50,11 @@ int validateDigonale(Game*);
 // 			break;
 // 		}
 // 		printGame(*game);
-// 		if (validateGame(game) != 0) {
-// 			printf("Victoire!\n");
+//
+// 		score = validateGame(game);
+// 		if (score != 0) {
+// 			if(score == WIN_WHITE)	printf("Victoire des Blancs!\n");
+// 			if(score == WIN_BLACK)	printf("Victoire des Noirs!\n");
 // 			stop = 1;
 // 		}
 // 	}
