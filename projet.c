@@ -2,17 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "./funct.h"
+#include "funct.h"
+#include "game.h"
 
 
 
 #define X .525731112119133606
 #define Z .850650808352039932
 
+Game* game;
+Cursor* cursor;
+
 //position de la camera
 float ex=0;
-float ey=5;
-float ez=-5;
+float ey=0;
+float ez=0;
 
 //pas de déplacement de la caméra utilisé dans fct keyboard
 float pas_camera=1;
@@ -85,22 +89,22 @@ void keyboard(unsigned char key, int x, int y)
    switch (key) {
      //déplacement caméra
       case 'q':
-         ex=ex-0.5;
+         ex=ex-1.5;
          break;
       case 'd':
-         ex=ex+0.5;
+         ex=ex+1.5;
          break;
       case 's':
-         ey=ey-0.5;
+         ey=ey-1.5;
          break;
       case 'z':
-         ey=ey+0.5;
+         ey=ey+1.5;
          break;
       case 'f':
-         ez=ez-0.5;
+         ez=ez-1.5;
          break;
       case 'r':
-         ez=ez+0.5;
+         ez=ez+1.5;
          break;
       case ' ':
 
@@ -119,16 +123,20 @@ void SpecialInput(int key, int x, int y)
   switch(key)
     {
     case GLUT_KEY_LEFT:
-      if(sphereTranslateX < 6) sphereTranslateX=sphereTranslateX+2;
+      cursorLeft(cursor);
+      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_RIGHT:
-      if(sphereTranslateX > 0) sphereTranslateX=sphereTranslateX-2;
+      cursorRight(cursor);
+      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_DOWN:
-      if(sphereTranslateZ > 0) sphereTranslateZ = sphereTranslateZ-2;
+      cursorFront(cursor);
+      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_UP:
-      if(sphereTranslateZ < 6) sphereTranslateZ=sphereTranslateZ+2;
+      cursorBack(cursor);
+      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
   }
 }
@@ -138,7 +146,7 @@ void display(void)
   int i;
 
   glLoadIdentity ();
-  gluLookAt (ex, ey, ez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (0, 7, -3, 0.0, -5.0, 0.0, 0.0, 0.5, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
   glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -152,20 +160,30 @@ void display(void)
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   glEnable(GL_LIGHT0);
 
-  //glPushMatrix();
-  //glRotatef(xRotation, 1, 0, 0);
+
 
   glScalef(1,1,1);
 
-  cubev2(-4,0,0, 8,1,8, 0.0,0.0,1.0);
 
-  glTranslatef(sphereTranslateX-3, sphereTranslateY+2 ,sphereTranslateZ+1);
-  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+
+  glRotatef(ex,0,1,0);
+  glRotatef(ey,1,0,0);
+  glRotatef(ez,0,0,1);
+
+  glPushMatrix();
+  cubev2(-4,0,-4, 8,1,8, 0.0,0.0,1.0);
+
+  glPushMatrix();
+  glTranslatef((cursor->x-1.5)*-2, (cursor->y + 2) ,(cursor->z - 1.5)*-2);
+
+  //GL_LINE pour fils de fer, GL_FILL pour remplissage
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   for(i = 0; i < 20; i++){
     triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,1.0,0.0,2);
   }
+  glPopMatrix();
 
-//  glPopMatrix();
+  glPopMatrix();
   glutSwapBuffers();
 }
 
@@ -189,6 +207,13 @@ void my_timer(int v)
 
 int main(int argc, char** argv)
 {
+   game = malloc(sizeof(Game));
+   int stop = 0;
+   char input;
+
+   initGame(game);
+   cursor = game->cursor;
+
    glutInit(&argc, argv);
    glutInitDisplayMode (GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
    glutInitWindowSize (500, 500);
@@ -207,3 +232,16 @@ int main(int argc, char** argv)
    glutMainLoop();
    return 0;
 }
+
+
+/* pour l'afficahge de texte
+* dans le display :
+* glDisable(GL_NOLMALIZE);
+* glDisable(GL_LIGHTING);
+*/
+
+/* pour le texte :
+* DABORD => glColor3f
+* PUIS => glWindowPos2i(x,y);
+* ENFIN => glutBitmapString(GLUT_BITMAP_HELVETICA_12, leTexteIci en char*);
+*/

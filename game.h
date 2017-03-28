@@ -1,11 +1,8 @@
+#ifndef GAME_H
+#define GAME_H
 
 #define GAME_SIZE 4
 
-const char NEUTRAL = 0;
-const char WHITE = 1;
-const char BLACK = -1;
-const char WIN_WHITE = 1 * GAME_SIZE;
-const char WIN_BLACK = -1 * GAME_SIZE;
 
 typedef struct _cursor {
 	int x;	// Positon du curseur sur X
@@ -45,3 +42,5 @@ void cursorLeft(Cursor*);	// x--
 void cursorBack(Cursor*);	// z++
 void cursorFront(Cursor*);	// z--
 int isCursorAt(Cursor, int x, int y, int z);
+
+#endif

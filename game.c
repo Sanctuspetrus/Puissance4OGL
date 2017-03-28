@@ -15,46 +15,52 @@ int validateLargeur(Game*);
 int validateLongueur(Game*);
 int validateDigonale(Game*);
 
-int main(int argc, char const *argv[]) {
-	Game* game = malloc(sizeof(Game));
-	Cursor* cursor;
-	int stop = 0;
-	char input;
+const char NEUTRAL = 0;
+const char WHITE = 1;
+const char BLACK = -1;
+const char WIN_WHITE = 1 * GAME_SIZE;
+const char WIN_BLACK = -1 * GAME_SIZE;
 
-	initGame(game);
-	cursor = game->cursor;
-
-	printGame(*game);
-	while(!stop){
-		input = getc(stdin);
-		getchar();
-		switch (input) {
-			case 'x': stop = 1;
-			break;
-			case 'd': cursorRight(cursor);
-			break;
-			case 'q': cursorLeft(cursor);
-			break;
-			case 'z': cursorBack(cursor);
-			break;
-			case 's': cursorFront(cursor);
-			break;
-			case 'e': putBallDown(game);
-			break;
-			default:
-			printf("cassé\n");
-			input = 0;
-			break;
-		}
-		printGame(*game);
-		if (validateGame(game) != 0) {
-			printf("Victoire!\n");
-			stop = 1;
-		}
-	}
-
-	return 0;
-}
+// int main(int argc, char const *argv[]) {
+// 	Game* game = malloc(sizeof(Game));
+// 	Cursor* cursor;
+// 	int stop = 0;
+// 	char input;
+//
+// 	initGame(game);
+// 	cursor = game->cursor;
+//
+// 	printGame(*game);
+// 	while(!stop){
+// 		input = getc(stdin);
+// 		getchar();
+// 		switch (input) {
+// 			case 'x': stop = 1;
+// 			break;
+// 			case 'd': cursorRight(cursor);
+// 			break;
+// 			case 'q': cursorLeft(cursor);
+// 			break;
+// 			case 'z': cursorBack(cursor);
+// 			break;
+// 			case 's': cursorFront(cursor);
+// 			break;
+// 			case 'e': putBallDown(game);
+// 			break;
+// 			default:
+// 			printf("cassé\n");
+// 			input = 0;
+// 			break;
+// 		}
+// 		printGame(*game);
+// 		if (validateGame(game) != 0) {
+// 			printf("Victoire!\n");
+// 			stop = 1;
+// 		}
+// 	}
+//
+// 	return 0;
+// }
 
 
 //	GAME

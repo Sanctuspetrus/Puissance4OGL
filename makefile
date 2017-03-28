@@ -5,7 +5,7 @@ LIBS=-lGL -lglut -lGLU
 
 DEPS=funct.h game.h
 
-OBJ=projet.o funct.o
+OBJ=projet.o funct.o game.o
 
 
 %.o: %.c $(DEPS)
