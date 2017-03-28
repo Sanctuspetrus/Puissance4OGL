@@ -15,11 +15,7 @@ int validateLargeur(Game*);
 int validateLongueur(Game*);
 int validateDigonale(Game*);
 
-const char NEUTRAL = 0;
-const char WHITE = 1;
-const char BLACK = -1;
-const char WIN_WHITE = 1 * GAME_SIZE;
-const char WIN_BLACK = -1 * GAME_SIZE;
+
 
 // int main(int argc, char const *argv[]) {
 // 	Game* game = malloc(sizeof(Game));

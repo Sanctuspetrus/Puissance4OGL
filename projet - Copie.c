@@ -10,13 +10,10 @@
 #define X .525731112119133606
 #define Z .850650808352039932
 
-Game* game;
-Cursor* cursor;
-
 //position de la camera
 float ex=0;
-float ey=0;
-float ez=0;
+float ey=10;
+float ez=-5;
 
 //pas de déplacement de la caméra utilisé dans fct keyboard
 float pas_camera=1;
@@ -89,27 +86,26 @@ void keyboard(unsigned char key, int x, int y)
    switch (key) {
      //déplacement caméra
       case 'q':
-         ex=ex-3;
+         ex=ex-0.5;
          break;
       case 'd':
-         ex=ex+3;
+         ex=ex+0.5;
          break;
       case 's':
-         ey=ey-3;
+         ey=ey-0.5;
          break;
       case 'z':
-         ey=ey+3;
+         ey=ey+0.5;
          break;
       case 'f':
-         ez=ez-3;
+         ez=ez-0.5;
          break;
       case 'r':
-         ez=ez+3;
+         ez=ez+0.5;
          break;
-      case ' ' :
+      case ' ':
+
         //on pose la boule
-        putBallDown(game);
-        printGame(*game);
          break;
       case 27:
          exit(0);
@@ -124,20 +120,16 @@ void SpecialInput(int key, int x, int y)
   switch(key)
     {
     case GLUT_KEY_LEFT:
-      cursorLeft(cursor);
-      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
+      if(sphereTranslateX < 6) sphereTranslateX=sphereTranslateX+2;
     break;
     case GLUT_KEY_RIGHT:
-      cursorRight(cursor);
-      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
+      if(sphereTranslateX > 0) sphereTranslateX=sphereTranslateX-2;
     break;
     case GLUT_KEY_DOWN:
-      cursorFront(cursor);
-      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
+      if(sphereTranslateZ > 0) sphereTranslateZ = sphereTranslateZ-2;
     break;
     case GLUT_KEY_UP:
-      cursorBack(cursor);
-      printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
+      if(sphereTranslateZ < 6) sphereTranslateZ=sphereTranslateZ+2;
     break;
   }
 }
@@ -145,12 +137,9 @@ void SpecialInput(int key, int x, int y)
 void display(void)
 {
   int i;
-  int z;
-  int y;
-  int x;
 
   glLoadIdentity ();
-  gluLookAt (0, 12, -3, 0.0, -5.0, 0.0, 0.0, 0.5, 0.0);
+  gluLookAt (ex, ey, ez, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
   glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -164,66 +153,22 @@ void display(void)
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   glEnable(GL_LIGHT0);
 
+  //glPushMatrix();
+  //glRotatef(xRotation, 1, 0, 0);
+
   glScalef(1,1,1);
 
-  glRotatef(ex,0,1,0);
-  glRotatef(ey,1,0,0);
-  glRotatef(ez,0,0,1);
+  cubev2(-4,0,0, 8,1,8, 0.0,0.0,1.0);
 
-  glPushMatrix();
-  cubev2(-4,0,-4, 8,1,8, 0.0,0.0,1.0);
-
-  //affichage de toutes les boules posées
-  glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-  for (z = 0; z < GAME_SIZE; z++) {
-		for (y = 0; y < GAME_SIZE; y++) {
-			for (x = 0; x < GAME_SIZE; x++) {
-        //BOULE BLANCHE
-        if(getPosColorAt(*game, x, y, z) == WHITE) {
-          glPushMatrix();
-          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
-          for(i = 0; i < 20; i++){
-            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,0.0,0.0,2);
-          }
-          glPopMatrix();
-        }
-        //BOULE NOIRE
-        if(getPosColorAt(*game, x, y, z) == BLACK) {
-          glPushMatrix();
-          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
-          for(i = 0; i < 20; i++){
-           triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 1.0,1.0,1.0,2);
-          }
-          glPopMatrix();
-        }
-      }
-    }
-  }
-
-  glPushMatrix();
-  glTranslatef((cursor->x-1.5)*-2, (GAME_SIZE*1.5)-(cursor->y + (fall(*game)*2)-2) ,(cursor->z - 1.5)*-2);
-
+  glTranslatef(sphereTranslateX-3, sphereTranslateY+2 ,sphereTranslateZ+1);
   //GL_LINE pour fils de fer, GL_FILL pour remplissage
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  if(getColor(*game) == 1){
-    for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 0.0,0.0,0.0,2);
-    }
-  }else if(getColor(*game) == -1){
-    for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 1.0,1.0,1.0,2);
-    }
+  for(i = 0; i < 20; i++){
+    triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,1.0,0.0,2);
   }
-  glPopMatrix();
 
-  glPopMatrix();
+//  glPopMatrix();
   glutSwapBuffers();
-  if(validateGame(game) == WIN_BLACK){
-    printf("VICTOIRE DU NOIR\n");
-  }
-  if(validateGame(game) == WIN_WHITE){
-    printf("VICTOIRE DU BLANC\n");
-  }
 }
 
 void reshape (int w, int h)
@@ -246,13 +191,6 @@ void my_timer(int v)
 
 int main(int argc, char** argv)
 {
-   game = malloc(sizeof(Game));
-   int stop = 0;
-   char input;
-
-   initGame(game);
-   cursor = game->cursor;
-
    glutInit(&argc, argv);
    glutInitDisplayMode (GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
    glutInitWindowSize (500, 500);
