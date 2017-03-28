@@ -6,8 +6,8 @@
 #define NEUTRAL 0
 #define WHITE 1
 #define BLACK -1
-#define WIN_BLACK 1 * GAME_SIZE
-#define WIN_WHITE -1 * GAME_SIZE
+#define WIN_BLACK -1 * GAME_SIZE
+#define WIN_WHITE 1 * GAME_SIZE
 
 
 typedef struct _cursor {

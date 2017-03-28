@@ -114,7 +114,6 @@ int validateHauteur(Game* game){
 				count += getPosColorAt(*game, x, y, z);
 			}
 			if (count == WIN_WHITE || count == WIN_BLACK) {
-				printf("yes\n");
 				return count;
 			}
 		}
@@ -134,7 +133,6 @@ int validateLargeur(Game* game){
 				count += getPosColorAt(*game, x, y, z);
 			}
 			if (count == WIN_WHITE || count == WIN_BLACK) {
-				printf("yes\n");
 				return count;
 			}
 		}
@@ -154,7 +152,6 @@ int validateLongueur(Game* game){
 				count += getPosColorAt(*game, x, y, z);
 			}
 			if (count == WIN_WHITE || count == WIN_BLACK) {
-				printf("yes\n");
 				return count;
 			}
 		}
