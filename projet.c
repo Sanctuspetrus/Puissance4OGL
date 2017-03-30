@@ -137,11 +137,16 @@ void keyboard(unsigned char key, int x, int y)
       case 'r':
          ez=ez+3;
          break;
+      case 'p':
+        victory = 0;
+        textGame = "";
+        resetGame(game);
+        break;
       case ' ' :
         if(victory == 0){
           //on pose la boule
           putBallDown(game);
-          printGame(*game);
+        // /  printGame(*game);
         }
         break;
       case 27:
@@ -213,7 +218,7 @@ void display(void)
   int x;
 
   glLoadIdentity ();
-  gluLookAt (0, 12, -3, 0.0, -5.0, 0.0, 0.0, 0.5, 0.0);
+  gluLookAt (0, 13, -3, 0.0, -5.0, 0.0, 0.0, 0.5, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
   glClear(GL_DEPTH_BUFFER_BIT);
 
@@ -330,9 +335,8 @@ void my_timer(int v)
 
 int main(int argc, char** argv)
 {
-   game = malloc(sizeof(Game));
 
-   initGame(game);
+   initGame(&game);
    cursor = game->cursor;
 
    glutInit(&argc, argv);

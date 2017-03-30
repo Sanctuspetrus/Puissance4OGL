@@ -24,7 +24,7 @@ typedef struct _game {
 
 
 // GAME
-void initGame(Game*);
+void initGame(Game**);
 void resetGame(Game*);
 int validateGame(Game*);
 void printGame(Game);

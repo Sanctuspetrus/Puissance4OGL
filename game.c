@@ -82,11 +82,10 @@ void printGame(Game game){
 	}
 }
 
-void initGame(Game* game){
-	int x,y,z;
-	game = malloc(sizeof(Game));
-	game->cursor = malloc(sizeof(Cursor));
-	resetGame(game);
+void initGame(Game** game){
+	*game = malloc(sizeof(Game));
+	(*game)->cursor = malloc(sizeof(Cursor));
+	resetGame(*game);
 }
 
 void resetGame(Game* game){
