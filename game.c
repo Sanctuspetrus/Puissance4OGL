@@ -13,7 +13,7 @@
 int validateHauteur(Game*);
 int validateLargeur(Game*);
 int validateLongueur(Game*);
-int validateDigonale(Game*);
+int validateDiagonales(Game*);
 
 
 
@@ -106,7 +106,7 @@ int validateGame(Game* game){
 	if ((res = validateHauteur(game))) { return res; }
 	if ((res = validateLargeur(game))) { return res; }
 	if ((res = validateLongueur(game))) { return res; }
-	if ((res = validateDigonale(game))) { return res; }
+	if ((res = validateDiagonales(game))) { return res; }
 	return res;
 }
 int validateHauteur(Game* game){
@@ -166,7 +166,108 @@ int validateLongueur(Game* game){
 	}
 	return 0;
 }
-int validateDigonale(Game* game){
+int validateDiagonales(Game* game){
+	int x,y,z;
+	int count = 0;
+
+	// DIAGONALES FACE
+	for(z=0;z < GAME_SIZE;z++){
+		x=0;y=0;count = 0;
+		while(x<GAME_SIZE && y<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			x++;y++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	for(z=0;z < GAME_SIZE;z++){
+		x=GAME_SIZE-1;y=0;count = 0;
+		while(x>=0 && y<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			x--;y++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	// DIAGONALES FLANC
+	for(x=0;x < GAME_SIZE;x++){
+		z=0;y=0;count = 0;
+		while(z<GAME_SIZE && y<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			z++;y++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	for(x=0;x < GAME_SIZE;x++){
+		z=GAME_SIZE-1;y=0;count = 0;
+		while(z>=0 && y<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			z--;y++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	// DIAGONALES VERTICALES
+	for(y=0;y < GAME_SIZE;y++){
+		z=0;x=0;count = 0;
+		while(z<GAME_SIZE && x<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			z++;x++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	for(y=0;y < GAME_SIZE;y++){
+		z=GAME_SIZE-1;x=0;count = 0;
+		while(z>=0 && x<GAME_SIZE){
+			count += getPosColorAt(*game, x, y, z);
+			z--;x++;
+		}
+		if (count == WIN_WHITE || count == WIN_BLACK) {
+			return count;
+		}
+	}
+	// DIAGONALES 3D
+	x=0;y=0;z=0;count = 0;
+	while(x<GAME_SIZE && y<GAME_SIZE && z<GAME_SIZE){
+		count += getPosColorAt(*game, x, y, z);
+		x++;y++;z++;
+	}
+	if (count == WIN_WHITE || count == WIN_BLACK) {
+		return count;
+	}
+	x=0;y=GAME_SIZE-1;z=0;count = 0;
+	while(x<GAME_SIZE && y>=0 && z<GAME_SIZE){
+		count += getPosColorAt(*game, x, y, z);
+		x++;y--;z++;
+	}
+	if (count == WIN_WHITE || count == WIN_BLACK) {
+		return count;
+	}
+
+	x=GAME_SIZE-1;y=0;z=0;count = 0;
+	while(x>=0 && y<GAME_SIZE && z<GAME_SIZE){
+		count += getPosColorAt(*game, x, y, z);
+		x--;y++;z++;
+	}
+	if (count == WIN_WHITE || count == WIN_BLACK) {
+		return count;
+	}
+	x=GAME_SIZE-1;y=GAME_SIZE-1;z=0;count = 0;
+	while(x>=0  && y>=0 && z<GAME_SIZE){
+		count += getPosColorAt(*game, x, y, z);
+		x--;y--;z++;
+	}
+	if (count == WIN_WHITE || count == WIN_BLACK) {
+		return count;
+	}
+
 	return 0;
 }
 
