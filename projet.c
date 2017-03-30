@@ -10,6 +10,8 @@
 #define X .525731112119133606
 #define Z .850650808352039932
 
+#define VITESSEDEPLACEMENT 1
+
 Game* game;
 Cursor* cursor;
 
@@ -25,6 +27,12 @@ float pas_camera=1;
 float sphereTranslateX = 0;
 float sphereTranslateY = 0;
 float sphereTranslateZ = 0;
+
+//variables utilisées pour le déplacement de la scène
+short enDeplacement = 0;
+short positionScene = 0;
+short nbDeplacement = 0;
+short direction = 0;
 
 // Proprietes de la source lumineuse
 //
@@ -83,16 +91,34 @@ void init(void)
    glClear (GL_COLOR_BUFFER_BIT);
 }
 
+void nextPositionScene(short next){
+  positionScene += next;
+  if(positionScene < 0) {
+    positionScene = 3;
+  }
+  if(positionScene > 3){
+    positionScene = 0;
+  }
+}
 
 void keyboard(unsigned char key, int x, int y)
 {
+  if(enDeplacement == 0){
    switch (key) {
      //déplacement caméra
       case 'q':
          ey=ey-3;
+         enDeplacement = 1;
+         direction = -1;
+         nextPositionScene(-1);
+         printf("position : %d\n", positionScene);
          break;
       case 'd':
          ey=ey+3;
+         enDeplacement = 1;
+         direction = 1;
+         nextPositionScene(1);
+         printf("position : %d\n", positionScene);
          break;
       case 's':
          ex=ex+3;
@@ -115,8 +141,9 @@ void keyboard(unsigned char key, int x, int y)
          exit(0);
          break;
    }
-   printf("%f, %f, %f\n", ex,ey,ez);
-   glutPostRedisplay();
+ }
+ printf("%f, %f, %f\n", ex,ey,ez);
+ glutPostRedisplay();
 }
 
 void SpecialInput(int key, int x, int y)
@@ -124,19 +151,51 @@ void SpecialInput(int key, int x, int y)
   switch(key)
     {
     case GLUT_KEY_LEFT:
-      cursorLeft(cursor);
+      if(positionScene == FRONT){
+          cursorLeft(cursor);
+      }else if (positionScene == LEFT){
+          cursorBack(cursor);
+      }else if (positionScene == BACK){
+          cursorRight(cursor);
+      }else if (positionScene == RIGHT){
+          cursorFront(cursor);
+      }
       printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_RIGHT:
-      cursorRight(cursor);
+    if(positionScene == FRONT){
+        cursorRight(cursor);
+    }else if (positionScene == LEFT){
+        cursorFront(cursor);
+    }else if (positionScene == BACK){
+        cursorLeft(cursor);
+    }else if (positionScene == RIGHT){
+        cursorBack(cursor);
+    }
       printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_DOWN:
-      cursorFront(cursor);
+    if(positionScene == FRONT){
+        cursorFront(cursor);
+    }else if (positionScene == LEFT){
+        cursorLeft(cursor);
+    }else if (positionScene == BACK){
+        cursorBack(cursor);
+    }else if (positionScene == RIGHT){
+        cursorRight(cursor);
+    }
       printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
     case GLUT_KEY_UP:
-      cursorBack(cursor);
+    if(positionScene == FRONT){
+        cursorBack(cursor);
+    }else if (positionScene == LEFT){
+        cursorRight(cursor);
+    }else if (positionScene == BACK){
+        cursorFront(cursor);
+    }else if (positionScene == RIGHT){
+        cursorLeft(cursor);
+    }
       printf("pos cursor %d, %d, %d\n", cursor->x, cursor->y, cursor->z);
     break;
   }
@@ -239,18 +298,24 @@ void reshape (int w, int h)
 
 void my_timer(int v)
 {
-  // xRotation += .75;
-   /*if(xRotation > 100)
-    xRotation = 0;*/
-   glutTimerFunc(20, my_timer, 1);
+
+  if(enDeplacement == 1){
+    if(nbDeplacement < 87){
+      ey += VITESSEDEPLACEMENT * direction;
+      nbDeplacement++;
+    }if(nbDeplacement == 87){
+      enDeplacement = 0;
+      nbDeplacement = 0;
+    }
+  }
+
+   glutTimerFunc(15, my_timer, 1);
    glutPostRedisplay();
 }
 
 int main(int argc, char** argv)
 {
    game = malloc(sizeof(Game));
-   int stop = 0;
-   char input;
 
    initGame(game);
    cursor = game->cursor;
