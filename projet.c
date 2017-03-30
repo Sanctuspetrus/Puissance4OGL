@@ -89,16 +89,16 @@ void keyboard(unsigned char key, int x, int y)
    switch (key) {
      //déplacement caméra
       case 'q':
-         ex=ex-3;
-         break;
-      case 'd':
-         ex=ex+3;
-         break;
-      case 's':
          ey=ey-3;
          break;
-      case 'z':
+      case 'd':
          ey=ey+3;
+         break;
+      case 's':
+         ex=ex+3;
+         break;
+      case 'z':
+         ex=ex-3;
          break;
       case 'f':
          ez=ez-3;
@@ -164,11 +164,13 @@ void display(void)
   glLightfv(GL_LIGHT0, GL_POSITION, light_position);
   glEnable(GL_LIGHT0);
 
+  glRotatef(ex,1,0,0);
+  glRotatef(ey,0,1,0);
+  glRotatef(ez,0,0,1);
+
   glScalef(1,1,1);
 
-  glRotatef(ex,0,1,0);
-  glRotatef(ey,1,0,0);
-  glRotatef(ez,0,0,1);
+
 
   glPushMatrix();
   cubev2(-4,0,-4, 8,1,8, 0.0,0.0,1.0);
@@ -183,7 +185,7 @@ void display(void)
           glPushMatrix();
           glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
           for(i = 0; i < 20; i++){
-            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,0.0,0.0,2);
+            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 1.0,1.0,1.0,2);
           }
           glPopMatrix();
         }
@@ -192,7 +194,7 @@ void display(void)
           glPushMatrix();
           glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
           for(i = 0; i < 20; i++){
-           triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 1.0,1.0,1.0,2);
+           triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,0.0,0.0,2);
           }
           glPopMatrix();
         }
@@ -207,11 +209,11 @@ void display(void)
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   if(getColor(*game) == 1){
     for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 0.0,0.0,0.0,2);
+      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 1.0,1.0,1.0,2);
     }
   }else if(getColor(*game) == -1){
     for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 1.0,1.0,1.0,2);
+      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 0.0,0.0,0.0,2);
     }
   }
   glPopMatrix();
