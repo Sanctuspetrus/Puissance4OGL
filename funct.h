@@ -1,5 +1,9 @@
 #include <GL/glut.h>
 
+#define FRONT 0
+#define LEFT 1
+#define BACK 2
+#define RIGHT 3
 
 void cube(int x,int y,int z,int scalex, int scaley, int scalez,float col1,float col2,float col3);
 
