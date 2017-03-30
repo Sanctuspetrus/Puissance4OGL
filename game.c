@@ -84,8 +84,13 @@ void printGame(Game game){
 
 void initGame(Game* game){
 	int x,y,z;
-
+	game = malloc(sizeof(Game));
 	game->cursor = malloc(sizeof(Cursor));
+	resetGame(game);
+}
+
+void resetGame(Game* game){
+	int x,y,z;
 	setCursorAt(game->cursor, 0, 0, 0);
 	setWhite(game->cursor);
 	for (z = 0; z < GAME_SIZE; z++) {
