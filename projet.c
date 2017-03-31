@@ -14,6 +14,8 @@
 
 #define TAILLEECRAN 500
 
+#define TAILLEBOULE 0.75
+
 Game* game;
 Cursor* cursor;
 
@@ -260,18 +262,18 @@ void display(void)
         //BOULE BLANCHE
         if(getPosColorAt(*game, x, y, z) == WHITE) {
           glPushMatrix();
-          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
+          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*1.5,(GAME_SIZE-z-2.5)*2);
           for(i = 0; i < 20; i++){
-            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 1.0,1.0,1.0,2);
+            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 1.0,1.0,1.0,2);
           }
           glPopMatrix();
         }
         //BOULE NOIRE
         if(getPosColorAt(*game, x, y, z) == BLACK) {
           glPushMatrix();
-          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*2,(GAME_SIZE-z-2.5)*2);
+          glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*1.5,(GAME_SIZE-z-2.5)*2);
           for(i = 0; i < 20; i++){
-           triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 2,2,2, 0.0,0.0,0.0,2);
+           triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 0.0,0.0,0.0,2);
           }
           glPopMatrix();
         }
@@ -280,17 +282,17 @@ void display(void)
   }
 
   glPushMatrix();
-  glTranslatef((cursor->x-1.5)*-2, (GAME_SIZE*1.5)-(cursor->y + (fall(*game)*2)-2) ,(cursor->z - 1.5)*-2);
+  glTranslatef((cursor->x-1.5)*-2, (GAME_SIZE*1.5)-(cursor->y + (fall(*game)))*1.5 ,(cursor->z - 1.5)*-2);
 
   //GL_LINE pour fils de fer, GL_FILL pour remplissage
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   if(getColor(*game) == 1){
     for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 1.0,1.0,1.0,2);
+      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 1.0,1.0,1.0,2);
     }
   }else if(getColor(*game) == -1){
     for(i = 0; i < 20; i++){
-      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], 1,1,1, 0.0,0.0,0.0,2);
+      triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 0.0,0.0,0.0,2);
     }
   }
   glPopMatrix();
@@ -329,7 +331,7 @@ void my_timer(int v)
     }
   }
 
-   glutTimerFunc(15, my_timer, 1);
+   glutTimerFunc(5, my_timer, 1);
    glutPostRedisplay();
 }
 
