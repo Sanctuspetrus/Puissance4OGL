@@ -144,8 +144,6 @@ void triangle(float *p1,float *p2,float *p3,float scalex, float scaley, float sc
 	glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
 
 
-	glPushMatrix();
-	glScalef(scalex, scaley, scalez);
 	glColor3f (col1, col2, col3);
 	glBegin(GL_POLYGON);
 		glNormal3f (p1[0], p1[1], p1[2]);
@@ -155,7 +153,6 @@ void triangle(float *p1,float *p2,float *p3,float scalex, float scaley, float sc
 		glNormal3f (p3[0], p3[1], p3[2]);
 		glVertex3f (p3[0], p3[1], p3[2]);
 	glEnd();
-	glPopMatrix();
 
 }
 

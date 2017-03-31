@@ -263,26 +263,35 @@ void display(void)
         if(getPosColorAt(*game, x, y, z) == WHITE) {
           glPushMatrix();
           glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*1.5,(GAME_SIZE-z-2.5)*2);
+		  	glPushMatrix();
+		  	glScalef(TAILLEBOULE, TAILLEBOULE, TAILLEBOULE);
           for(i = 0; i < 20; i++){
             triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 1.0,1.0,1.0,2);
           }
           glPopMatrix();
-        }
+          glPopMatrix();
+	  }
         //BOULE NOIRE
         if(getPosColorAt(*game, x, y, z) == BLACK) {
           glPushMatrix();
           glTranslatef((GAME_SIZE-x-2.5)*2,(GAME_SIZE-y)*1.5,(GAME_SIZE-z-2.5)*2);
+		  	glPushMatrix();
+		  	glScalef(TAILLEBOULE, TAILLEBOULE, TAILLEBOULE);
           for(i = 0; i < 20; i++){
            triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 0.0,0.0,0.0,2);
           }
+          glPopMatrix();
           glPopMatrix();
         }
       }
     }
   }
 
+
   glPushMatrix();
-  glTranslatef((cursor->x-1.5)*-2, (GAME_SIZE*1.5)-(cursor->y + (fall(*game)))*1.5 ,(cursor->z - 1.5)*-2);
+  glTranslatef((cursor->x-1.5)*-2, (GAME_SIZE*1.5)-(cursor->y + fall(*game))*1.5 ,(cursor->z - 1.5)*-2);
+	glPushMatrix();
+	glScalef(TAILLEBOULE, TAILLEBOULE, TAILLEBOULE);
 
   //GL_LINE pour fils de fer, GL_FILL pour remplissage
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
@@ -295,7 +304,8 @@ void display(void)
       triangle_rec(sommets[sindex[i][0]], sommets[sindex[i][1]], sommets[sindex[i][2]], TAILLEBOULE,TAILLEBOULE,TAILLEBOULE, 0.0,0.0,0.0,2);
     }
   }
-  glPopMatrix();
+  glPopMatrix();//Scale
+  glPopMatrix();//Translation
 
   glPopMatrix();
   glutSwapBuffers();
