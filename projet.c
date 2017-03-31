@@ -14,7 +14,7 @@
 
 #define TAILLEECRAN 500
 
-#define TAILLEBOULE 0.75
+#define TAILLEBOULE 0.75 
 
 Game* game;
 Cursor* cursor;
